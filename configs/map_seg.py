@@ -12,7 +12,7 @@ cudnn_benchmark = True
 dataset_type = "GeospatialDataset"
 
 # TO BE DEFINED BY USER: data directory
-data_root = "/projects/bbym/nathanj/hls-foundation-os/hls_burn_scars/"
+data_root = "<path to data root directory>"
 
 num_frames = 1
 img_size = 224
