@@ -5,6 +5,7 @@ custom_imports = dict(imports=["map_seg"])
 # base options
 dist_params = dict(backend="nccl")
 log_level = "INFO"
+workers_per_gpu = 
 
 dataset_type = "MapSegDataset"
 img_suffix = ".png"
@@ -21,6 +22,8 @@ train_pipeline = [
 CLASSES = ("non seg", "seg")
 
 data = dict(
+    samples_per_gpu=4,
+    workers_per_gpu=4,
     train=dict(
         type=dataset_type,
         CLASSES=CLASSES,
