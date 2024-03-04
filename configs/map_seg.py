@@ -15,16 +15,16 @@ dataset_type = "MapSegDataset"
 data_root = "/projects/bbym/nathanj/hls-foundation-os/data/map_seg/"
 
 num_frames = 1
-img_size = 224
+img_size = 256
 num_workers = 4
 samples_per_gpu = 4
 
 bands = [0, 1, 2, 3, 4, 5]
-tile_size = 224
+tile_size = 256
 orig_nsize = 512
 crop_size = (tile_size, tile_size)
-img_suffix = "_merged.tif"
-seg_map_suffix = ".mask.tif"
+img_suffix = ".png"
+seg_map_suffix = "_mask.png"
 ignore_index = -1
 image_nodata = -9999
 image_nodata_replace = 0
@@ -52,20 +52,20 @@ save_path = work_dir
 train_pipeline = [
     dict(type="LoadMapSegDataPatch", to_float32=image_to_float32),
     dict(type="LoadMapSegAnnotations", reduce_zero_label=False),
-    dict(type="BandsExtract", bands=bands),
+    # dict(type="BandsExtract", bands=bands),
     dict(type="RandomFlip", prob=0.5),
     dict(type="ToTensor", keys=["img", "gt_semantic_seg"]),
     # to channels first
     dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
     # dict(type="TorchNormalize", **img_norm_cfg),
-    dict(type="TorchRandomCrop", crop_size=(tile_size, tile_size)),
-    dict(
-        type="Reshape",
-        keys=["img"],
-        new_shape=(len(bands), num_frames, tile_size, tile_size),
-    ),
-    dict(type="Reshape", keys=["gt_semantic_seg"], new_shape=(1, tile_size, tile_size)),
-    dict(type="CastTensor", keys=["gt_semantic_seg"], new_type="torch.LongTensor"),
+    # dict(type="TorchRandomCrop", crop_size=(tile_size, tile_size)),
+    # dict(
+    #     type="Reshape",
+    #     keys=["img"],
+    #     new_shape=(len(bands), num_frames, tile_size, tile_size),
+    # ),
+    # dict(type="Reshape", keys=["gt_semantic_seg"], new_shape=(1, tile_size, tile_size)),
+    # dict(type="CastTensor", keys=["gt_semantic_seg"], new_type="torch.LongTensor"),
     dict(type="Collect", keys=["img", "gt_semantic_seg"]),
 ]
 test_pipeline = [
