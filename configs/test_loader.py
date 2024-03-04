@@ -5,7 +5,6 @@ custom_imports = dict(imports=["map_seg"])
 # base options
 dist_params = dict(backend="nccl")
 log_level = "INFO"
-workers_per_gpu = 
 
 dataset_type = "MapSegDataset"
 img_suffix = ".png"
