@@ -12,31 +12,31 @@ cudnn_benchmark = True
 dataset_type = "GeospatialDataset"
 
 # TO BE DEFINED BY USER: data directory
-data_root = "<path to data root directory>"
+data_root = "/projects/bbym/shared/all_patched_data/"
 
 num_frames = 1
 img_size = 224
 num_workers = 4
 samples_per_gpu = 4
 
-img_norm_cfg = dict(
-    means=[
-        0.033349706741586264,
-        0.05701185520536176,
-        0.05889748132001316,
-        0.2323245113436119,
-        0.1972854853760658,
-        0.11944914225186566,
-    ],
-    stds=[
-        0.02269135568823774,
-        0.026807560223070237,
-        0.04004109844362779,
-        0.07791732423672691,
-        0.08708738838140137,
-        0.07241979477437814,
-    ],
-)  # change the mean and std of all the bands
+# img_norm_cfg = dict(
+#     means=[
+#         0.033349706741586264,
+#         0.05701185520536176,
+#         0.05889748132001316,
+#         0.2323245113436119,
+#         0.1972854853760658,
+#         0.11944914225186566,
+#     ],
+#     stds=[
+#         0.02269135568823774,
+#         0.026807560223070237,
+#         0.04004109844362779,
+#         0.07791732423672691,
+#         0.08708738838140137,
+#         0.07241979477437814,
+#     ],
+# )  # change the mean and std of all the bands
 
 bands = [0, 1, 2, 3, 4, 5]
 tile_size = 224
@@ -76,7 +76,7 @@ train_pipeline = [
     dict(type="ToTensor", keys=["img", "gt_semantic_seg"]),
     # to channels first
     dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
-    dict(type="TorchNormalize", **img_norm_cfg),
+    # dict(type="TorchNormalize", **img_norm_cfg),
     dict(type="TorchRandomCrop", crop_size=(tile_size, tile_size)),
     dict(
         type="Reshape",
@@ -93,7 +93,7 @@ test_pipeline = [
     dict(type="ToTensor", keys=["img"]),
     # to channels first
     dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
-    dict(type="TorchNormalize", **img_norm_cfg),
+    # dict(type="TorchNormalize", **img_norm_cfg),
     dict(
         type="Reshape",
         keys=["img"],
