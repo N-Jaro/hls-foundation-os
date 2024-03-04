@@ -16,12 +16,12 @@ data_root = "/projects/bbym/nathanj/hls-foundation-os/data/map_seg/"
 
 num_frames = 1
 img_size = 256
-num_workers = 4
-samples_per_gpu = 4
+num_workers = 1
+samples_per_gpu = 1
 
 bands = [0, 1, 2, 3, 4, 5]
 tile_size = 256
-orig_nsize = 512
+orig_nsize = 1
 crop_size = (tile_size, tile_size)
 img_suffix = ".png"
 seg_map_suffix = "_mask.png"
