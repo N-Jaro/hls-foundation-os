@@ -2,6 +2,10 @@ import os
 custom_imports = dict(imports=["geospatial_fm"])
 custom_imports = dict(imports=["map_seg"])
 
+# base options
+dist_params = dict(backend="nccl")
+log_level = "INFO"
+
 dataset_type = "MapSegDataset"
 
 # TO BE DEFINED BY USER: data directory
