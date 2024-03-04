@@ -38,7 +38,8 @@ class LoadMapSegDataPatch(object):
         else:
             filename = results["img_info"]["filename"]
 
-        print(filename)
+        print("Current file:", results['filename'])
+        
         img = open_tiff(filename)
         # to channels last format
         img = np.transpose(img, (1, 2, 0))

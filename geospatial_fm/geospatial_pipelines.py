@@ -275,6 +275,7 @@ class LoadGeospatialImageFromFile(object):
             filename = osp.join(results["img_prefix"], results["img_info"]["filename"])
         else:
             filename = results["img_info"]["filename"]
+            
         img = open_tiff(filename)
         # to channels last format
         img = np.transpose(img, (1, 2, 0))
