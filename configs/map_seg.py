@@ -12,7 +12,7 @@ cudnn_benchmark = True
 dataset_type = "MapSegDataset"
 
 # TO BE DEFINED BY USER: data directory
-data_root = "/projects/bbym/shared/all_patched_data/training/poly/map_patches/"
+data_root = "/projects/bbym/nathanj/hls-foundation-os/data/map_seg/"
 
 num_frames = 1
 img_size = 224
