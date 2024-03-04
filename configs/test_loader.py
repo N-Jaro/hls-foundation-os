@@ -1,6 +1,5 @@
 import os
-custom_imports = dict(imports=["geospatial_fm"])
-custom_imports = dict(imports=["map_seg"])
+custom_imports = dict(imports=["geospatial_fm", "map_seg"])
 
 # base options
 dist_params = dict(backend="nccl")
@@ -29,6 +28,17 @@ data = dict(
         data_root=data_root,
         img_dir="training",
         ann_dir="training",
+        img_suffix=img_suffix,
+        seg_map_suffix=seg_map_suffix,
+        pipeline=train_pipeline,
+        ignore_index=-1,
+    ),
+    val=dict(
+        type=dataset_type,
+        CLASSES=CLASSES,
+        data_root=data_root,
+        img_dir="validation",
+        ann_dir="validation",
         img_suffix=img_suffix,
         seg_map_suffix=seg_map_suffix,
         pipeline=train_pipeline,
