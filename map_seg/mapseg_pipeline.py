@@ -1,5 +1,7 @@
 
 import os.path as osp
+from PIL import Image
+import numpy as np
 
 import numpy as np
 import rioxarray
@@ -38,11 +40,14 @@ class LoadMapSegDataPatch(object):
         else:
             filename = results["img_info"]["filename"]
 
-        print("Current file:", results['filename'])
+        # print("Current file:", results['filename'])
         
-        img = open_tiff(filename)
+        im_frame = Image.open(filename)
+        img = np.array(im_frame.getdata())
+
+        # img = open_tiff(filename)
         # to channels last format
-        img = np.transpose(img, (1, 2, 0))
+        # img = np.transpose(img, (1, 2, 0))
 
         if self.to_float32:
             img = img.astype(np.float32)
@@ -105,7 +110,10 @@ class LoadMapSegAnnotations(object):
         else:
             filename = results["ann_info"]["seg_map"]
 
-        gt_semantic_seg = open_tiff(filename).squeeze()
+        im_frame = Image.open(filename)
+        gt_semantic_seg = np.array(im_frame.getdata())
+
+        # gt_semantic_seg = open_tiff(filename).squeeze()
 
         if self.nodata is not None:
             gt_semantic_seg = np.where(
