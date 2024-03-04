@@ -40,7 +40,7 @@ class LoadMapSegDataPatch(object):
         else:
             filename = results["img_info"]["filename"]
 
-        print("Current file:", results['filename'])
+        print("Current file:", filename)
         
         im_frame = Image.open(filename)
         img = np.array(im_frame.getdata())
@@ -110,7 +110,7 @@ class LoadMapSegAnnotations(object):
         else:
             filename = results["ann_info"]["seg_map"]
 
-        print("Current file:", results['filename'])
+        print("Current file:", filename)
 
         im_frame = Image.open(filename)
         gt_semantic_seg = np.array(im_frame.getdata())
