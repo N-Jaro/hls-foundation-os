@@ -70,17 +70,17 @@ train_pipeline = [
 ]
 test_pipeline = [
     dict(type="LoadMapSegDataPatch", to_float32=image_to_float32),
-    dict(type="BandsExtract", bands=bands),
+    # dict(type="BandsExtract", bands=bands),
     dict(type="ToTensor", keys=["img"]),
     # to channels first
     dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
     # dict(type="TorchNormalize", **img_norm_cfg),
-    dict(
-        type="Reshape",
-        keys=["img"],
-        new_shape=(len(bands), num_frames, -1, -1),
-        look_up=dict({"2": 1, "3": 2}),
-    ),
+    # dict(
+    #     type="Reshape",
+    #     keys=["img"],
+    #     new_shape=(len(bands), num_frames, -1, -1),
+    #     look_up=dict({"2": 1, "3": 2}),
+    # ),
     dict(type="CastTensor", keys=["img"], new_type="torch.FloatTensor"),
     dict(
         type="CollectTestList",
@@ -102,7 +102,7 @@ test_pipeline = [
     ),
 ]
 
-CLASSES = ("Unburnt land", "Burn scar")
+CLASSES = ("non-seg", "seg")
 
 data = dict(
     samples_per_gpu=samples_per_gpu,
