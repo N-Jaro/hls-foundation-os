@@ -1,10 +1,12 @@
-from map_seg.customLoader import LoadImageWithMetadata 
+import os
+custom_imports = dict(imports=["geospatial_fm"])
+custom_imports = dict(imports=["map_seg"])
 
-dataset_type = 'SomeDatasetType'  # A simple dataset type
-data_root = '/projects/bbym/shared/all_patched_data/training/poly/map_patches/'
+dataset_type = "MapSegDataset"
 
-# img_norm_cfg = dict(...)   # If you need normalization
+# TO BE DEFINED BY USER: data directory
+data_root = "/projects/bbym/nathanj/hls-foundation-os/data/map_seg"
 train_pipeline = [
-    dict(type='LoadImageWithMetadata'),  # Use your custom loader
-    # ... other necessary transforms
+    dict(type="LoadMapSegDataPatch"),
+    dict(type="LoadMapSegAnnotations"),
 ]

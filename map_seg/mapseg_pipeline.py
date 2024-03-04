@@ -32,35 +32,38 @@ class LoadMapSegDataPatch(object):
         self.nodata_replace = nodata_replace
 
     def __call__(self, results):
+
         if results.get("img_prefix") is not None:
             filename = osp.join(results["img_prefix"], results["img_info"]["filename"])
         else:
             filename = results["img_info"]["filename"]
-        img = open_tiff(filename)
-        # to channels last format
-        img = np.transpose(img, (1, 2, 0))
 
-        if self.to_float32:
-            img = img.astype(np.float32)
+        print(filename)
+        # img = open_tiff(filename)
+        # # to channels last format
+        # img = np.transpose(img, (1, 2, 0))
 
-        if self.nodata is not None:
-            img = np.where(img == self.nodata, self.nodata_replace, img)
+        # if self.to_float32:
+        #     img = img.astype(np.float32)
 
-        results["filename"] = filename
-        results["ori_filename"] = results["img_info"]["filename"]
-        results["img"] = img
-        results["img_shape"] = img.shape
-        results["ori_shape"] = img.shape
-        # Set initial values for default meta_keys
-        results["pad_shape"] = img.shape
-        results["scale_factor"] = 1.0
-        results["flip"] = False
-        num_channels = 1 if len(img.shape) < 3 else img.shape[2]
-        results["img_norm_cfg"] = dict(
-            mean=np.zeros(num_channels, dtype=np.float32),
-            std=np.ones(num_channels, dtype=np.float32),
-            to_rgb=False,
-        )
+        # if self.nodata is not None:
+        #     img = np.where(img == self.nodata, self.nodata_replace, img)
+
+        # results["filename"] = filename
+        # results["ori_filename"] = results["img_info"]["filename"]
+        # results["img"] = img
+        # results["img_shape"] = img.shape
+        # results["ori_shape"] = img.shape
+        # # Set initial values for default meta_keys
+        # results["pad_shape"] = img.shape
+        # results["scale_factor"] = 1.0
+        # results["flip"] = False
+        # num_channels = 1 if len(img.shape) < 3 else img.shape[2]
+        # results["img_norm_cfg"] = dict(
+        #     mean=np.zeros(num_channels, dtype=np.float32),
+        #     std=np.ones(num_channels, dtype=np.float32),
+        #     to_rgb=False,
+        # )
         return results
 
     def __repr__(self):
@@ -95,31 +98,34 @@ class LoadMapSegAnnotations(object):
         self.nodata_replace = nodata_replace
 
     def __call__(self, results):
+
         if results.get("seg_prefix", None) is not None:
             filename = osp.join(results["seg_prefix"], results["ann_info"]["seg_map"])
         else:
             filename = results["ann_info"]["seg_map"]
 
-        gt_semantic_seg = open_tiff(filename).squeeze()
+            print(filename)
 
-        if self.nodata is not None:
-            gt_semantic_seg = np.where(
-                gt_semantic_seg == self.nodata, self.nodata_replace, gt_semantic_seg
-            )
-        # reduce zero_label
-        if self.reduce_zero_label:
-            # avoid using underflow conversion
-            gt_semantic_seg[gt_semantic_seg == 0] = 255
-            gt_semantic_seg = gt_semantic_seg - 1
-            gt_semantic_seg[gt_semantic_seg == 254] = 255
-        if results.get("label_map", None) is not None:
-            # Add deep copy to solve bug of repeatedly
-            # replace `gt_semantic_seg`, which is reported in
-            # https://github.com/open-mmlab/mmsegmentation/pull/1445/
-            gt_semantic_seg_copy = gt_semantic_seg.copy()
-            for old_id, new_id in results["label_map"].items():
-                gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
+        # gt_semantic_seg = open_tiff(filename).squeeze()
 
-        results["gt_semantic_seg"] = gt_semantic_seg
-        results["seg_fields"].append("gt_semantic_seg")
+        # if self.nodata is not None:
+        #     gt_semantic_seg = np.where(
+        #         gt_semantic_seg == self.nodata, self.nodata_replace, gt_semantic_seg
+        #     )
+        # # reduce zero_label
+        # if self.reduce_zero_label:
+        #     # avoid using underflow conversion
+        #     gt_semantic_seg[gt_semantic_seg == 0] = 255
+        #     gt_semantic_seg = gt_semantic_seg - 1
+        #     gt_semantic_seg[gt_semantic_seg == 254] = 255
+        # if results.get("label_map", None) is not None:
+        #     # Add deep copy to solve bug of repeatedly
+        #     # replace `gt_semantic_seg`, which is reported in
+        #     # https://github.com/open-mmlab/mmsegmentation/pull/1445/
+        #     gt_semantic_seg_copy = gt_semantic_seg.copy()
+        #     for old_id, new_id in results["label_map"].items():
+        #         gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
+
+        # results["gt_semantic_seg"] = gt_semantic_seg
+        # results["seg_fields"].append("gt_semantic_seg")
         return results
