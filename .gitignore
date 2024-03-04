@@ -3,3 +3,10 @@
 *egg*
 *json*
 *build*
+/data
+/burnt_scar
+/Prithvi-100M-burn-scar
+/tf_logs
+/hls_burn_scars
+*.pth
+/prithvi
