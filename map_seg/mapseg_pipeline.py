@@ -104,7 +104,7 @@ class LoadMapSegAnnotations(object):
         else:
             filename = results["ann_info"]["seg_map"]
 
-        # gt_semantic_seg = open_tiff(filename).squeeze()
+        gt_semantic_seg = open_tiff(filename).squeeze()
 
         if self.nodata is not None:
             gt_semantic_seg = np.where(
