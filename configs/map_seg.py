@@ -1,6 +1,7 @@
 import os
 
 custom_imports = dict(imports=["geospatial_fm"])
+custom_imports = dict(imports=["map_seg"])
 
 # base options
 dist_params = dict(backend="nccl")
@@ -9,34 +10,15 @@ load_from = None
 resume_from = None
 cudnn_benchmark = True
 
-dataset_type = "GeospatialDataset"
+dataset_type = "MapSegDataset"
 
 # TO BE DEFINED BY USER: data directory
-data_root = "/projects/bbym/shared/all_patched_data/"
+data_root = "/projects/bbym/nathanj/hls-foundation-os/data/map_seg"
 
 num_frames = 1
 img_size = 224
 num_workers = 4
 samples_per_gpu = 4
-
-# img_norm_cfg = dict(
-#     means=[
-#         0.033349706741586264,
-#         0.05701185520536176,
-#         0.05889748132001316,
-#         0.2323245113436119,
-#         0.1972854853760658,
-#         0.11944914225186566,
-#     ],
-#     stds=[
-#         0.02269135568823774,
-#         0.026807560223070237,
-#         0.04004109844362779,
-#         0.07791732423672691,
-#         0.08708738838140137,
-#         0.07241979477437814,
-#     ],
-# )  # change the mean and std of all the bands
 
 bands = [0, 1, 2, 3, 4, 5]
 tile_size = 224
@@ -63,7 +45,7 @@ evaluation_interval = 1000
 
 # TO BE DEFINED BY USER: model path
 experiment = "/projects/bbym/nathanj/hls-foundation-os/"
-project_dir = "burnt_scar"
+project_dir = "map_seg"
 work_dir = os.path.join(project_dir, experiment)
 save_path = work_dir
 
