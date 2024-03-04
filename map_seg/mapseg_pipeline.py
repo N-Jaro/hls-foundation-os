@@ -40,7 +40,7 @@ class LoadMapSegDataPatch(object):
         else:
             filename = results["img_info"]["filename"]
 
-        # print("Current file:", results['filename'])
+        print("Current file:", results['filename'])
         
         im_frame = Image.open(filename)
         img = np.array(im_frame.getdata())
