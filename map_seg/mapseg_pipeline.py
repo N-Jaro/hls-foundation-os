@@ -10,9 +10,9 @@ from mmcv.parallel import DataContainer as DC
 from mmseg.datasets.builder import PIPELINES
 from torchvision import transforms
 
-def open_tiff(fname):
-    data = rioxarray.open_rasterio(fname)
-    return data.to_numpy()
+# def open_tiff(fname):
+#     data = rioxarray.open_rasterio(fname)
+#     return data.to_numpy()
 
 @PIPELINES.register_module()
 class LoadMapSegDataPatch(object):
@@ -35,12 +35,12 @@ class LoadMapSegDataPatch(object):
 
     def __call__(self, results):
 
+        print('filename:', results["img_info"]["filename"])
+
         if results.get("img_prefix") is not None:
             filename = os.path.join(results["img_prefix"], results["img_info"]["filename"])
         else:
             filename = results["img_info"]["filename"]
-
-        print("Current file:", filename)
 
         patch_name = os.path.basename(filename)
         base_name = patch_name.split('_poly')[0]
@@ -126,7 +126,8 @@ class LoadMapSegAnnotations(object):
         self.nodata_replace = nodata_replace
 
     def __call__(self, results):
-
+        
+        print('seg_map:', results["ann_info"]["seg_map"])
         if results.get("seg_prefix", None) is not None:
             filename = os.path.join(results["seg_prefix"], results["ann_info"]["seg_map"])
         else:
