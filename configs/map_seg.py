@@ -23,8 +23,8 @@ bands = [0, 1, 2, 3, 4, 5]
 tile_size = 256
 orig_nsize = 1
 crop_size = (tile_size, tile_size)
-img_suffix = "_img.png"
-seg_map_suffix = "_mask.png"
+# img_suffix = "_img.png"
+# seg_map_suffix = "_mask.png"
 ignore_index = -1
 image_nodata = -9999
 image_nodata_replace = 0
@@ -111,10 +111,8 @@ data = dict(
         type=dataset_type,
         CLASSES=CLASSES,
         data_root=data_root,
-        img_dir="training",
-        ann_dir="training",
-        img_suffix=img_suffix,
-        seg_map_suffix=seg_map_suffix,
+        data_prefix=dict(
+            img_path='images/training', seg_map_path='annotations/training'), 
         pipeline=train_pipeline,
         ignore_index=-1,
     ),
@@ -122,10 +120,8 @@ data = dict(
         type=dataset_type,
         CLASSES=CLASSES,
         data_root=data_root,
-        img_dir="validation",
-        ann_dir="validation",
-        img_suffix=img_suffix,
-        seg_map_suffix=seg_map_suffix,
+        data_prefix=dict(
+            img_path='images/validation', seg_map_path='annotations/validation'), 
         pipeline=test_pipeline,
         ignore_index=-1,
     ),
@@ -133,10 +129,8 @@ data = dict(
         type=dataset_type,
         CLASSES=CLASSES,
         data_root=data_root,
-        img_dir="validation",
-        ann_dir="validation",
-        img_suffix=img_suffix,
-        seg_map_suffix=seg_map_suffix,
+        data_prefix=dict(
+            img_path='images/validation', seg_map_path='annotations/validation'), 
         pipeline=test_pipeline,
         ignore_index=-1,
     ),
