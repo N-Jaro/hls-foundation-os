@@ -40,27 +40,24 @@ class LoadMapSegDataPatch(object):
         else:
             filename = results["img_info"]["filename"]
 
+        print("Current file:", filename)
+
         patch_name = os.path.basename(filename)
         base_name = patch_name.split('_poly')[0]
-        
         base_folder = 'training' if 'training' in filename else 'validation'
-
-        print("Current file:", filename, patch_name)
-
         data_dir='/projects/bbym/shared/all_patched_data/'
-
         legend_path = os.path.join(data_dir, base_folder,'poly', 'legend', base_name + '_poly.png')
         
-        lgnd_frame = Image.open(legend_path)
-        lgnd = np.array(lgnd_frame.getdata())
+        # lgnd_frame = Image.open(legend_path)
+        # lgnd = np.array(lgnd_frame.getdata())
 
-        # Handle potential channel conversions (RGB, RGBA, Grayscale)
-        if len(lgnd.shape) == 2:  # Grayscale
-            lgnd = np.expand_dims(lgnd, axis=-1)  # Add a channel dimension
-        elif len(lgnd.shape) == 3 and lgnd.shape[2] == 4: # RGBA 
-            lgnd = lgnd[:, :, :3]  # Discard the alpha channel
+        # # Handle potential channel conversions (RGB, RGBA, Grayscale)
+        # if len(lgnd.shape) == 2:  # Grayscale
+        #     lgnd = np.expand_dims(lgnd, axis=-1)  # Add a channel dimension
+        # elif len(lgnd.shape) == 3 and lgnd.shape[2] == 4: # RGBA 
+        #     lgnd = lgnd[:, :, :3]  # Discard the alpha channel
 
-        lgnd = np.transpose(img, (1, 2, 0))
+        # lgnd = np.transpose(img, (1, 2, 0))
 
         im_frame = Image.open(filename)
         img = np.array(im_frame.getdata())
@@ -73,8 +70,8 @@ class LoadMapSegDataPatch(object):
 
         img = np.transpose(img, (1, 2, 0))
 
-        # concatenate legend and image patches 
-        img = np.concatenate((img,lgnd), axis=0) 
+        # # concatenate legend and image patches 
+        # img = np.concatenate((img,lgnd), axis=0) 
 
 
         if self.to_float32:
