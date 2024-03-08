@@ -140,25 +140,26 @@ class LoadMapSegAnnotations(object):
         im_frame = Image.open(filename)
         gt_semantic_seg = np.array(im_frame.getdata())
 
-        # gt_semantic_seg = open_tiff(filename).squeeze()
+        gt_semantic_seg = np.transpose(gt_semantic_seg, (1, 2, 0))
 
-        if self.nodata is not None:
-            gt_semantic_seg = np.where(
-                gt_semantic_seg == self.nodata, self.nodata_replace, gt_semantic_seg
-            )
+        # if self.nodata is not None:
+        #     gt_semantic_seg = np.where(
+        #         gt_semantic_seg == self.nodata, self.nodata_replace, gt_semantic_seg
+        #     )
         # reduce zero_label
-        if self.reduce_zero_label:
-            # avoid using underflow conversion
-            gt_semantic_seg[gt_semantic_seg == 0] = 255
-            gt_semantic_seg = gt_semantic_seg - 1
-            gt_semantic_seg[gt_semantic_seg == 254] = 255
-        if results.get("label_map", None) is not None:
-            # Add deep copy to solve bug of repeatedly
-            # replace `gt_semantic_seg`, which is reported in
-            # https://github.com/open-mmlab/mmsegmentation/pull/1445/
-            gt_semantic_seg_copy = gt_semantic_seg.copy()
-            for old_id, new_id in results["label_map"].items():
-                gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
+        # if self.reduce_zero_label:
+        #     # avoid using underflow conversion
+        #     gt_semantic_seg[gt_semantic_seg == 0] = 255
+        #     gt_semantic_seg = gt_semantic_seg - 1
+        #     gt_semantic_seg[gt_semantic_seg == 254] = 255
+
+        # if results.get("label_map", None) is not None:
+        #     # Add deep copy to solve bug of repeatedly
+        #     # replace `gt_semantic_seg`, which is reported in
+        #     # https://github.com/open-mmlab/mmsegmentation/pull/1445/
+        #     gt_semantic_seg_copy = gt_semantic_seg.copy()
+        #     for old_id, new_id in results["label_map"].items():
+        #         gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
 
         results["gt_semantic_seg"] = gt_semantic_seg
         results["seg_fields"].append("gt_semantic_seg")

@@ -111,8 +111,8 @@ data = dict(
         type=dataset_type,
         CLASSES=CLASSES,
         data_root=data_root,
-        data_prefix=dict(
-            img_path='images/training', seg_map_path='annotations/training'), 
+        img_dir= 'images/training',
+        ann_dir= 'annotations/training',
         pipeline=train_pipeline,
         ignore_index=-1,
     ),
@@ -120,8 +120,8 @@ data = dict(
         type=dataset_type,
         CLASSES=CLASSES,
         data_root=data_root,
-        data_prefix=dict(
-            img_path='images/validation', seg_map_path='annotations/validation'), 
+        img_dir= 'images/validation',
+        ann_dir= 'annotations/validation',
         pipeline=test_pipeline,
         ignore_index=-1,
     ),
@@ -129,8 +129,8 @@ data = dict(
         type=dataset_type,
         CLASSES=CLASSES,
         data_root=data_root,
-        data_prefix=dict(
-            img_path='images/validation', seg_map_path='annotations/validation'), 
+        img_dir= 'images/validation',
+        ann_dir= 'annotations/validation',
         pipeline=test_pipeline,
         ignore_index=-1,
     ),
