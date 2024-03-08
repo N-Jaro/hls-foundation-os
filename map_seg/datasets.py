@@ -14,9 +14,9 @@ class MapSegDataset(CustomDataset):
 
         self.PALETTE = PALETTE
         
-        # gt_seg_map_loader_cfg = kwargs.pop('gt_seg_map_loader_cfg') if 'gt_seg_map_loader_cfg' in kwargs else dict()
+        gt_seg_map_loader_cfg = kwargs.pop('gt_seg_map_loader_cfg') if 'gt_seg_map_loader_cfg' in kwargs else dict()
         # reduce_zero_label = kwargs.pop('reduce_zero_label') if 'reduce_zero_label' in kwargs else False
         
         super(MapSegDataset, self).__init__(**kwargs)
 
-        self.gt_seg_map_loader = LoadMapSegAnnotations()
+        self.gt_seg_map_loader = LoadMapSegAnnotations(**gt_seg_map_loader_cfg)
