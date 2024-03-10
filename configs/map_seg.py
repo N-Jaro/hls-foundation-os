@@ -43,12 +43,11 @@ max_intervals = 10000
 evaluation_interval = 1000
 
 # TO BE DEFINED BY USER: model path
-experiment = "/projects/bbym/nathanj/hls-foundation-os/"
-project_dir = "map_seg"
+project_dir = "/projects/bbym/nathanj/hls-foundation-os/"
+experiment = "save_model"
 work_dir = os.path.join(project_dir, experiment)
 save_path = work_dir
 
-save_path = work_dir
 train_pipeline = [
     dict(type="LoadMapSegDataPatch"),
     dict(type="LoadMapSegAnnotations"),
