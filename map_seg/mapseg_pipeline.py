@@ -102,6 +102,14 @@ class LoadMapSegAnnotations(object):
 
         # print("gt_semantic_seg.shape:",gt_semantic_seg.shape)
 
+        if results.get("label_map", None) is not None:
+            # Add deep copy to solve bug of repeatedly
+            # replace `gt_semantic_seg`, which is reported in
+            # https://github.com/open-mmlab/mmsegmentation/pull/1445/
+            gt_semantic_seg_copy = gt_semantic_seg.copy()
+            for old_id, new_id in results["label_map"].items():
+                gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
+
         results["gt_semantic_seg"] = gt_semantic_seg
         results["seg_fields"].append("gt_semantic_seg")
         return results
