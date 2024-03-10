@@ -87,10 +87,12 @@ class LoadMapSegAnnotations(object):
         reduce_zero_label=False,
         nodata=None,
         nodata_replace=-1,
+        resize_to=(224, 224)
     ):
         self.reduce_zero_label = reduce_zero_label
         self.nodata = nodata
         self.nodata_replace = nodata_replace
+        self.resize_to = resize_to
 
     def __call__(self, results):
 
