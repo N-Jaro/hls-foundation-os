@@ -5,10 +5,12 @@ import numpy as np
 
 import numpy as np
 import rioxarray
+import torchvision as TV
 import torchvision.transforms.functional as F
 from mmcv.parallel import DataContainer as DC
 from mmseg.datasets.builder import PIPELINES
 from torchvision import transforms
+
 
 # def open_tiff(fname):
 #     data = rioxarray.open_rasterio(fname)
@@ -59,7 +61,7 @@ class LoadMapSegDataPatch(object):
 
         # lgnd = np.transpose(img, (1, 2, 0))
 
-        img = transforms.io.read_file(filename)
+        img = TV.io.read_file(filename)
 
         # Handle potential channel conversions (RGB, RGBA, Grayscale)
         if len(img.shape) == 2:  # Grayscale
@@ -136,7 +138,7 @@ class LoadMapSegAnnotations(object):
 
         print("Current file:", filename)
 
-        gt_semantic_seg = transforms.io.read_file(filename)
+        gt_semantic_seg = TV.io.read_file(filename)
 
         # gt_semantic_seg = np.transpose(gt_semantic_seg, (1, 2, 0))
 
