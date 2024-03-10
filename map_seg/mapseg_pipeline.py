@@ -18,8 +18,8 @@ from torchvision import transforms
 @PIPELINES.register_module()
 class LoadMapSegDataPatch(object):
 
-    def __init__(self, to_float32=False, nodata=None, nodata_replace=0.0):
-        self.to_float32 = True
+    def __init__(self, to_float32=True, nodata=None, nodata_replace=0.0):
+        self.to_float32 = to_float32
         self.nodata = nodata
         self.nodata_replace = nodata_replace
 
