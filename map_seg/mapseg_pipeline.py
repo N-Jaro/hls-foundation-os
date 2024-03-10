@@ -53,18 +53,18 @@ class LoadMapSegDataPatch(object):
 
         # Load image patch
         img = mmcv.imread(filename)  
-        
-        print("img.shape before:",img.shape)
 
         # Load legend
         legend = np.array(Image.open(legend_path))
 
-        img = np.concatenate((img,legend), axis=0) 
+        img = np.concatenate((img,legend), axis=-1) 
 
-        print("img.shape after:",img.shape)
+        img = np.transpose(img, (1, 2, 0))
 
         if self.to_float32:
             img = img.astype(np.float32)
+
+        print("img.shape after:",img.shape)
 
         results["filename"] = filename
         results["ori_filename"] = results["img_info"]["filename"]
