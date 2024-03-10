@@ -68,7 +68,7 @@ class LoadMapSegDataPatch(object):
         elif len(img.shape) == 3 and img.shape[2] == 4: # RGBA 
             img = img[:, :, :3]  # Discard the alpha channel
 
-        img = np.transpose(img, (1, 2, 0))
+        # img = np.transpose(img, (1, 2, 0))
 
         # # concatenate legend and image patches 
         # img = np.concatenate((img,lgnd), axis=0) 
@@ -140,7 +140,7 @@ class LoadMapSegAnnotations(object):
         im_frame = Image.open(filename)
         gt_semantic_seg = np.array(im_frame.getdata())
 
-        gt_semantic_seg = np.transpose(gt_semantic_seg, (1, 2, 0))
+        # gt_semantic_seg = np.transpose(gt_semantic_seg, (1, 2, 0))
 
         # if self.nodata is not None:
         #     gt_semantic_seg = np.where(
