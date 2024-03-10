@@ -17,17 +17,6 @@ from torchvision import transforms
 
 @PIPELINES.register_module()
 class LoadMapSegDataPatch(object):
-    """
-
-    It loads a tiff image. Returns in channels last format.
-
-    Args:
-        to_float32 (bool): Whether to convert the loaded image to a float32
-            numpy array. If set to False, the loaded image is an uint8 array.
-            Defaults to False.
-        nodata (float/int): no data value to substitute to nodata_replace
-        nodata_replace (float/int): value to use to replace no data
-    """
 
     def __init__(self, to_float32=False, nodata=None, nodata_replace=0.0):
         self.to_float32 = to_float32
@@ -43,7 +32,6 @@ class LoadMapSegDataPatch(object):
         else:
             filename = results["img_info"]["filename"]
 
-        
         # Patch and legend logic
         patch_name = os.path.basename(filename)
         base_name = patch_name.split('_poly')[0]
@@ -61,8 +49,6 @@ class LoadMapSegDataPatch(object):
 
         if self.to_float32:
             img = img.astype(np.float32)
-
-        print("img.shape after:",img.shape)
 
         results["filename"] = filename
         results["ori_filename"] = results["img_info"]["filename"]
@@ -89,18 +75,6 @@ class LoadMapSegDataPatch(object):
 
 @PIPELINES.register_module()
 class LoadMapSegAnnotations(object):
-    """Load annotations for semantic segmentation.
-
-    Args:
-        to_uint8 (bool): Whether to convert the loaded label to a uint8
-        reduce_zero_label (bool): Whether reduce all label value by 1.
-            Usually used for datasets where 0 is background label.
-            Default: False.
-        nodata (float/int): no data value to substitute to nodata_replace
-        nodata_replace (float/int): value to use to replace no data
-
-
-    """
 
     def __init__(
         self,
@@ -113,38 +87,16 @@ class LoadMapSegAnnotations(object):
         self.nodata_replace = nodata_replace
 
     def __call__(self, results):
-        
-        print('seg_map:', results["ann_info"]["seg_map"])
 
         if results.get("seg_prefix", None) is not None:
             filename = os.path.join(results["seg_prefix"], results["ann_info"]["seg_map"])
         else:
             filename = results["ann_info"]["seg_map"]
 
-        print("Current file:", filename)
+        gt_semantic_seg = np.array(Image.open(filename)) 
 
-        gt_semantic_seg = mmcv.imread(filename)  
-
-        # gt_semantic_seg = np.transpose(gt_semantic_seg, (1, 2, 0))
-
-        # if self.nodata is not None:
-        #     gt_semantic_seg = np.where(
-        #         gt_semantic_seg == self.nodata, self.nodata_replace, gt_semantic_seg
-        #     )
-        # reduce zero_label
-        # if self.reduce_zero_label:
-        #     # avoid using underflow conversion
-        #     gt_semantic_seg[gt_semantic_seg == 0] = 255
-        #     gt_semantic_seg = gt_semantic_seg - 1
-        #     gt_semantic_seg[gt_semantic_seg == 254] = 255
-
-        # if results.get("label_map", None) is not None:
-        #     # Add deep copy to solve bug of repeatedly
-        #     # replace `gt_semantic_seg`, which is reported in
-        #     # https://github.com/open-mmlab/mmsegmentation/pull/1445/
-        #     gt_semantic_seg_copy = gt_semantic_seg.copy()
-        #     for old_id, new_id in results["label_map"].items():
-        #         gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
+        if gt_semantic_seg.shape[-1] == 1:  # Check if the last dimension is 1
+            gt_semantic_seg = np.squeeze(gt_semantic_seg, axis=-1)  # Squeeze to remove the extra dimension
 
         print("gt_semantic_seg.shape:",gt_semantic_seg.shape)
 

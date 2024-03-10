@@ -52,37 +52,22 @@ save_path = work_dir
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type="LoadMapSegDataPatch"),
-    dict(type="LoadMapSegAnnotations", reduce_zero_label=False),
-    # dict(type="BandsExtract", bands=bands),
-    dict(type="RandomFlip", prob=0.5),
+    dict(type="LoadMapSegAnnotations"),
     dict(type="ToTensor", keys=["img", "gt_semantic_seg"]),
     # to channels first
-    # dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
-    # dict(type="TorchNormalize", **img_norm_cfg),
-    # dict(type="TorchRandomCrop", crop_size=(tile_size, tile_size)),
-    # dict(
-    #     type="Reshape",
-    #     keys=["img"],
-    #     new_shape=(len(bands), num_frames, tile_size, tile_size),
-    # ),
-    # dict(type="Reshape", keys=["gt_semantic_seg"], new_shape=(1, tile_size, tile_size)),
-    # dict(type="CastTensor", keys=["gt_semantic_seg"], new_type="torch.LongTensor"),
+    dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
+    dict(type="Reshape", keys=["img"], new_shape=(6, 1, 256, 256)),
+    dict(type="Reshape", keys=["gt_semantic_seg"], new_shape=(1, 256, 256)),
+    dict(type="CastTensor", keys=["gt_semantic_seg"], new_type="torch.LongTensor"),
     dict(type="Collect", keys=["img", "gt_semantic_seg"]),
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type="LoadMapSegDataPatch", to_float32=image_to_float32),
-    # dict(type="BandsExtract", bands=bands),
+    dict(type="LoadMapSegDataPatch"),
     dict(type="ToTensor", keys=["img"]),
     # to channels first
-    # dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
-    # dict(type="TorchNormalize", **img_norm_cfg),
-    # dict(
-    #     type="Reshape",
-    #     keys=["img"],
-    #     new_shape=(len(bands), num_frames, -1, -1),
-    #     look_up=dict({"2": 1, "3": 2}),
-    # ),
+    dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
+    dict(type="Reshape", keys=["img"], new_shape=(6, 1, 256, 256)),
     dict(type="CastTensor", keys=["img"], new_type="torch.FloatTensor"),
     dict(
         type="CollectTestList",
