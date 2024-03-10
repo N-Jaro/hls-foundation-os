@@ -59,8 +59,6 @@ class LoadMapSegDataPatch(object):
 
         img = np.concatenate((img,legend), axis=-1) 
 
-        img = np.transpose(img, (1, 2, 0))
-
         if self.to_float32:
             img = img.astype(np.float32)
 
