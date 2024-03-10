@@ -44,7 +44,7 @@ evaluation_interval = 1000
 
 # TO BE DEFINED BY USER: model path
 project_dir = "/projects/bbym/nathanj/hls-foundation-os/"
-experiment = "save_model"
+experiment = "save_model_1"
 work_dir = os.path.join(project_dir, experiment)
 save_path = work_dir
 
