@@ -59,8 +59,7 @@ class LoadMapSegDataPatch(object):
 
         # lgnd = np.transpose(img, (1, 2, 0))
 
-        im_frame = Image.open(filename)
-        img = np.array(im_frame.getdata())
+        img = transforms.io.read_file(filename)
 
         # Handle potential channel conversions (RGB, RGBA, Grayscale)
         if len(img.shape) == 2:  # Grayscale
@@ -137,8 +136,7 @@ class LoadMapSegAnnotations(object):
 
         print("Current file:", filename)
 
-        im_frame = Image.open(filename)
-        gt_semantic_seg = np.array(im_frame.getdata())
+        gt_semantic_seg = transforms.io.read_file(filename)
 
         # gt_semantic_seg = np.transpose(gt_semantic_seg, (1, 2, 0))
 
