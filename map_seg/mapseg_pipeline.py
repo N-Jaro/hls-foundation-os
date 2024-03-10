@@ -2,8 +2,7 @@
 import os
 from PIL import Image
 import numpy as np
-
-import numpy as np
+import mmcv
 import rioxarray
 import torchvision as TV
 import torchvision.transforms.functional as F
@@ -44,37 +43,25 @@ class LoadMapSegDataPatch(object):
         else:
             filename = results["img_info"]["filename"]
 
+        
+        # Patch and legend logic
         patch_name = os.path.basename(filename)
         base_name = patch_name.split('_poly')[0]
         base_folder = 'training' if 'training' in filename else 'validation'
-        data_dir='/projects/bbym/shared/all_patched_data/'
-        legend_path = os.path.join(data_dir, base_folder,'poly', 'legend', base_name + '_poly.png')
+        data_dir = '/projects/bbym/shared/all_patched_data/'
+        legend_path = os.path.join(data_dir, base_folder, 'poly', 'legend', base_name + '_poly.png')
+
+        # Load image patch
+        img = mmcv.imread(filename)  
         
-        # lgnd_frame = Image.open(legend_path)
-        # lgnd = np.array(lgnd_frame.getdata())
+        print("img.shape before:",img.shape)
 
-        # # Handle potential channel conversions (RGB, RGBA, Grayscale)
-        # if len(lgnd.shape) == 2:  # Grayscale
-        #     lgnd = np.expand_dims(lgnd, axis=-1)  # Add a channel dimension
-        # elif len(lgnd.shape) == 3 and lgnd.shape[2] == 4: # RGBA 
-        #     lgnd = lgnd[:, :, :3]  # Discard the alpha channel
+        # Load legend
+        legend = np.array(Image.open(legend_path))
 
-        # lgnd = np.transpose(img, (1, 2, 0))
+        img = np.concatenate((img,legend), axis=0) 
 
-        img = TV.io.read_file(filename)
-
-        # Handle potential channel conversions (RGB, RGBA, Grayscale)
-        if len(img.shape) == 2:  # Grayscale
-            img = np.expand_dims(img, axis=-1)  # Add a channel dimension
-        elif len(img.shape) == 3 and img.shape[2] == 4: # RGBA 
-            img = img[:, :, :3]  # Discard the alpha channel
-
-        # img = np.transpose(img, (1, 2, 0))
-
-        # # concatenate legend and image patches 
-        # img = np.concatenate((img,lgnd), axis=0) 
-
-        print("img.shape:",img.shape)
+        print("img.shape after:",img.shape)
 
         if self.to_float32:
             img = img.astype(np.float32)
@@ -138,7 +125,7 @@ class LoadMapSegAnnotations(object):
 
         print("Current file:", filename)
 
-        gt_semantic_seg = TV.io.read_file(filename)
+        gt_semantic_seg = mmcv.imread(filename)  
 
         # gt_semantic_seg = np.transpose(gt_semantic_seg, (1, 2, 0))
 
