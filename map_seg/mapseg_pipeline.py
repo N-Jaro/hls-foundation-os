@@ -26,7 +26,7 @@ class LoadMapSegDataPatch(object):
 
     def __call__(self, results):
 
-        print('filename:', results["img_info"]["filename"])
+        # print('filename:', results["img_info"]["filename"])
 
         if results.get("img_prefix") is not None:
             filename = os.path.join(results["img_prefix"], results["img_info"]["filename"])
