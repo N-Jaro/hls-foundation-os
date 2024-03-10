@@ -19,7 +19,7 @@ from torchvision import transforms
 class LoadMapSegDataPatch(object):
 
     def __init__(self, to_float32=False, nodata=None, nodata_replace=0.0):
-        self.to_float32 = to_float32
+        self.to_float32 = True
         self.nodata = nodata
         self.nodata_replace = nodata_replace
 
@@ -100,7 +100,7 @@ class LoadMapSegAnnotations(object):
         if gt_semantic_seg.shape[-1] == 1:  # Check if the last dimension is 1
             gt_semantic_seg = np.squeeze(gt_semantic_seg, axis=-1)  # Squeeze to remove the extra dimension
 
-        print("gt_semantic_seg.shape:",gt_semantic_seg.shape)
+        # print("gt_semantic_seg.shape:",gt_semantic_seg.shape)
 
         results["gt_semantic_seg"] = gt_semantic_seg
         results["seg_fields"].append("gt_semantic_seg")
