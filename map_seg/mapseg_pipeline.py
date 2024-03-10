@@ -58,7 +58,8 @@ class LoadMapSegDataPatch(object):
         # Set initial values for default meta_keys
         results["pad_shape"] = img.shape
         results["scale_factor"] = 1.0
-        results["flip"] = False
+        # results["flip"] = False
+        # results["flip_direction"] = 'vertical'
         num_channels = 1 if len(img.shape) < 3 else img.shape[2]
         results["img_norm_cfg"] = dict(
             mean=np.zeros(num_channels, dtype=np.float32),
