@@ -48,7 +48,7 @@ class LoadMapSegDataPatch(object):
         img = np.concatenate((img,legend), axis=-1) 
 
         if self.to_float32:
-            img = img.astype(np.float32) / 255.0
+            img = img.astype(np.float32)
 
         results["filename"] = filename
         results["ori_filename"] = results["img_info"]["filename"]
