@@ -40,7 +40,7 @@ class LoadMapSegDataPatch(object):
         legend_path = os.path.join(data_dir, base_folder, 'poly', 'legend', base_name + '_poly.png')
 
         # Load image patch
-        img = mmcv.imread(filename)  
+        img = np.array(Image.open(filename)) 
 
         # Load legend
         legend = np.array(Image.open(legend_path))
@@ -56,15 +56,16 @@ class LoadMapSegDataPatch(object):
         results["img_shape"] = img.shape
         results["ori_shape"] = img.shape
         # Set initial values for default meta_keys
-        results["pad_shape"] = img.shape
-        results["scale_factor"] = 1.0
-        results["flip"] = False
-        num_channels = 1 if len(img.shape) < 3 else img.shape[2]
-        results["img_norm_cfg"] = dict(
-            mean=np.zeros(num_channels, dtype=np.float32),
-            std=np.ones(num_channels, dtype=np.float32),
-            to_rgb=False,
-        )
+        # results["pad_shape"] = img.shape
+        # results["scale_factor"] = 1.0
+        # results["flip"] = False
+        # num_channels = 1 if len(img.shape) < 3 else img.shape[2]
+        # results["img_norm_cfg"] = dict(
+        #     mean=np.zeros(num_channels, dtype=np.float32),
+        #     std=np.ones(num_channels, dtype=np.float32),
+        #     to_rgb=False,
+        # )
+
         return results
 
     def __repr__(self):
