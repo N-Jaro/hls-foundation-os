@@ -42,11 +42,12 @@ class LoadMapSegDataPatch(object):
 
         # Load image patch
         img = np.array(Image.open(filename)) 
-        img = img.resize(self.resize_to, Image.ANTIALIAS)
-
+        # img = img.resize(self.resize_to, Image.ANTIALIAS)
+        img = mmcv.imresize(img, self.resize_to, return_scale=False)
         # Load legend
         legend = np.array(Image.open(legend_path))
-        legend = legend.resize(self.resize_to, Image.ANTIALIAS)
+        # legend = legend.resize(self.resize_to, Image.ANTIALIAS)
+        legend = mmcv.imresize(legend, self.resize_to, return_scale=False)
 
         img = np.concatenate((img,legend), axis=-1) 
 
@@ -99,7 +100,8 @@ class LoadMapSegAnnotations(object):
             filename = results["ann_info"]["seg_map"]
 
         gt_semantic_seg = np.array(Image.open(filename)) 
-        gt_semantic_seg = gt_semantic_seg.resize(self.resize_to, Image.ANTIALIAS)
+        # gt_semantic_seg = gt_semantic_seg.resize(self.resize_to, Image.ANTIALIAS)
+        gt_semantic_seg = mmcv.imresize(gt_semantic_seg, self.resize_to, return_scale=False)
 
         if gt_semantic_seg.shape[-1] == 1:  # Check if the last dimension is 1
             gt_semantic_seg = np.squeeze(gt_semantic_seg, axis=-1)  # Squeeze to remove the extra dimension
