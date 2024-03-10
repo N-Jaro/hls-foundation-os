@@ -50,7 +50,6 @@ save_path = work_dir
 
 save_path = work_dir
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
     dict(type="LoadMapSegDataPatch"),
     dict(type="LoadMapSegAnnotations"),
     dict(type="ToTensor", keys=["img", "gt_semantic_seg"]),
@@ -62,7 +61,6 @@ train_pipeline = [
     dict(type="Collect", keys=["img", "gt_semantic_seg"]),
 ]
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
     dict(type="LoadMapSegDataPatch"),
     dict(type="ToTensor", keys=["img"]),
     # to channels first

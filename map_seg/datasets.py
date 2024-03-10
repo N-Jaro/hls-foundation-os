@@ -5,8 +5,6 @@ from .mapseg_pipeline import LoadMapSegAnnotations
         
 @DATASETS.register_module()
 class MapSegDataset(CustomDataset):
-    """GeospatialDataset dataset.
-    """
 
     def __init__(self, CLASSES=(0, 1), PALETTE=None, **kwargs):
         
