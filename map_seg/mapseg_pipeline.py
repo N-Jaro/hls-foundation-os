@@ -73,6 +73,7 @@ class LoadMapSegDataPatch(object):
         # # concatenate legend and image patches 
         # img = np.concatenate((img,lgnd), axis=0) 
 
+        print("img.shape:",img.shape)
 
         if self.to_float32:
             img = img.astype(np.float32)
@@ -128,6 +129,7 @@ class LoadMapSegAnnotations(object):
     def __call__(self, results):
         
         print('seg_map:', results["ann_info"]["seg_map"])
+
         if results.get("seg_prefix", None) is not None:
             filename = os.path.join(results["seg_prefix"], results["ann_info"]["seg_map"])
         else:
@@ -158,6 +160,8 @@ class LoadMapSegAnnotations(object):
         #     gt_semantic_seg_copy = gt_semantic_seg.copy()
         #     for old_id, new_id in results["label_map"].items():
         #         gt_semantic_seg[gt_semantic_seg_copy == old_id] = new_id
+
+        print("gt_semantic_seg.shape:",gt_semantic_seg.shape)
 
         results["gt_semantic_seg"] = gt_semantic_seg
         results["seg_fields"].append("gt_semantic_seg")
