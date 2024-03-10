@@ -15,12 +15,12 @@ dataset_type = "MapSegDataset"
 data_root = "/projects/bbym/nathanj/hls-foundation-os/data/map_seg/"
 
 num_frames = 1
-img_size = 256
+img_size = 224
 num_workers = 1
 samples_per_gpu = 1
 
 bands = [0, 1, 2, 3, 4, 5]
-tile_size = 256
+tile_size = 224
 orig_nsize = 1
 crop_size = (tile_size, tile_size)
 # img_suffix = "_img.png"
@@ -55,8 +55,8 @@ train_pipeline = [
     dict(type="ToTensor", keys=["img", "gt_semantic_seg"]),
     # to channels first
     dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
-    dict(type="Reshape", keys=["img"], new_shape=(6, 1, 256, 256)),
-    dict(type="Reshape", keys=["gt_semantic_seg"], new_shape=(1, 256, 256)),
+    dict(type="Reshape", keys=["img"], new_shape=(6, 1, tile_size, tile_size)),
+    dict(type="Reshape", keys=["gt_semantic_seg"], new_shape=(1, tile_size, tile_size)),
     dict(type="CastTensor", keys=["gt_semantic_seg"], new_type="torch.LongTensor"),
     dict(type="Collect", keys=["img", "gt_semantic_seg"]),
 ]
@@ -65,7 +65,7 @@ test_pipeline = [
     dict(type="ToTensor", keys=["img"]),
     # to channels first
     dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
-    dict(type="Reshape", keys=["img"], new_shape=(6, 1, 256, 256)),
+    dict(type="Reshape", keys=["img"], new_shape=(6, 1, tile_size, tile_size)),
     dict(type="CastTensor", keys=["img"], new_type="torch.FloatTensor"),
     dict(
         type="CollectTestList",

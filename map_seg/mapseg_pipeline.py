@@ -18,10 +18,11 @@ from torchvision import transforms
 @PIPELINES.register_module()
 class LoadMapSegDataPatch(object):
 
-    def __init__(self, to_float32=True, nodata=None, nodata_replace=0.0):
+    def __init__(self, to_float32=True, nodata=None, nodata_replace=0.0, resize_to=(224, 224)):
         self.to_float32 = to_float32
         self.nodata = nodata
         self.nodata_replace = nodata_replace
+        self.resize_to = resize_to
 
     def __call__(self, results):
 
@@ -41,9 +42,11 @@ class LoadMapSegDataPatch(object):
 
         # Load image patch
         img = np.array(Image.open(filename)) 
+        img = img.resize(self.resize_to, Image.ANTIALIAS)
 
         # Load legend
         legend = np.array(Image.open(legend_path))
+        legend = legend.resize(self.resize_to, Image.ANTIALIAS)
 
         img = np.concatenate((img,legend), axis=-1) 
 
@@ -96,6 +99,7 @@ class LoadMapSegAnnotations(object):
             filename = results["ann_info"]["seg_map"]
 
         gt_semantic_seg = np.array(Image.open(filename)) 
+        gt_semantic_seg = gt_semantic_seg.resize(self.resize_to, Image.ANTIALIAS)
 
         if gt_semantic_seg.shape[-1] == 1:  # Check if the last dimension is 1
             gt_semantic_seg = np.squeeze(gt_semantic_seg, axis=-1)  # Squeeze to remove the extra dimension
