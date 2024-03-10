@@ -67,24 +67,24 @@ test_pipeline = [
     dict(type="TorchPermute", keys=["img"], order=(2, 0, 1)),
     dict(type="Reshape", keys=["img"], new_shape=(6, 1, 256, 256)),
     dict(type="CastTensor", keys=["img"], new_type="torch.FloatTensor"),
-    dict(
-        type="CollectTestList",
-        keys=["img"],
-        meta_keys=[
-            "img_info",
-            "seg_fields",
-            "img_prefix",
-            "seg_prefix",
-            "filename",
-            "ori_filename",
-            "img",
-            "img_shape",
-            "ori_shape",
-            "pad_shape",
-            "scale_factor",
-            "img_norm_cfg",
-        ],
-    ),
+    # dict(
+    #     type="CollectTestList",
+    #     keys=["img"],
+    #     meta_keys=[
+    #         "img_info",
+    #         "seg_fields",
+    #         "img_prefix",
+    #         "seg_prefix",
+    #         "filename",
+    #         "ori_filename",
+    #         "img",
+    #         "img_shape",
+    #         "ori_shape",
+    #         "pad_shape",
+    #         "scale_factor",
+    #         "img_norm_cfg",
+    #     ],
+    # ),
 ]
 
 CLASSES = ("non-seg", "seg")
