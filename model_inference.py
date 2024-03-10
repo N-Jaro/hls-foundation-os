@@ -174,9 +174,9 @@ def process_test_pipeline(custom_test_pipeline, bands=None):
             "img",
             "img_shape",
             "ori_shape",
-            "pad_shape",
-            "scale_factor",
-            "img_norm_cfg",
+            # "pad_shape",
+            # "scale_factor",
+            # "img_norm_cfg",
         ]
         custom_test_pipeline[collect_index[0]]["meta_keys"] = keys
 
