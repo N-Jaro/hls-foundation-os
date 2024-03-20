@@ -87,7 +87,7 @@ def load_image_and_predict(map_file_name, prediction_path, model):
             print(f"Predicted image saved at: {output_image_path}")
 
 prediction_path = '/projects/bbym/nathanj/hls-foundation-os/'
-config_path = '/projects/bbym/nathanj/hls-foundation-os/configs/maps_seg.py'
+config_path = '/projects/bbym/nathanj/hls-foundation-os/configs/map_seg.py'
 checkpoint_path = '/projects/bbym/nathanj/hls-foundation-os/save_model_1/best_mIoU_iter_9000.pth'
 
 # init model and load checkpoint
