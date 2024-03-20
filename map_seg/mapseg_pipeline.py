@@ -17,16 +17,19 @@ from torchvision import transforms
 
 @PIPELINES.register_module()
 class LoadMapSegDataPatch(object):
-
     def __init__(self, to_float32=True, nodata=None, nodata_replace=0.0, resize_to=(224, 224)):
         self.to_float32 = to_float32
         self.nodata = nodata
         self.nodata_replace = nodata_replace
         self.resize_to = resize_to
+        self.data_transform = transforms.Compose([
+                                                    transforms.Resize(self.resize_to),
+                                                    transforms.ToTensor(),
+                                                    transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                                                            std=[0.229, 0.224, 0.225]),
+                                                ])
 
     def __call__(self, results):
-
-        # print('filename:', results["img_info"]["filename"])
 
         if results.get("img_prefix") is not None:
             filename = os.path.join(results["img_prefix"], results["img_info"]["filename"])
@@ -39,15 +42,17 @@ class LoadMapSegDataPatch(object):
         base_folder = 'training' if 'training' in filename else 'validation'
         data_dir = '/projects/bbym/shared/all_patched_data/'
         legend_path = os.path.join(data_dir, base_folder, 'poly', 'legend', base_name + '_poly.png')
+        
+        
 
         # Load image patch
         img = np.array(Image.open(filename)) 
         # img = img.resize(self.resize_to, Image.ANTIALIAS)
-        img = mmcv.imresize(img, self.resize_to, return_scale=False)
+        img = self.data_transform(Image.fromarray(img))
         # Load legend
         legend = np.array(Image.open(legend_path))
         # legend = legend.resize(self.resize_to, Image.ANTIALIAS)
-        legend = mmcv.imresize(legend, self.resize_to, return_scale=False)
+        legend = self.data_transform(Image.fromarray(legend))
 
         img = np.concatenate((img,legend), axis=-1) 
 
@@ -93,6 +98,10 @@ class LoadMapSegAnnotations(object):
         self.nodata = nodata
         self.nodata_replace = nodata_replace
         self.resize_to = resize_to
+        self.mask_transforms = transforms.Compose([
+                                                transforms.Resize((self.resize_to, )),
+                                                transforms.ToTensor()
+                                            ])
 
     def __call__(self, results):
 
@@ -101,9 +110,10 @@ class LoadMapSegAnnotations(object):
         else:
             filename = results["ann_info"]["seg_map"]
 
+
         gt_semantic_seg = np.array(Image.open(filename)) 
         # gt_semantic_seg = gt_semantic_seg.resize(self.resize_to, Image.ANTIALIAS)
-        gt_semantic_seg = mmcv.imresize(gt_semantic_seg, self.resize_to, return_scale=False)
+        gt_semantic_seg = self.mask_transforms(Image.fromarray(gt_semantic_seg))
 
         if gt_semantic_seg.shape[-1] == 1:  # Check if the last dimension is 1
             gt_semantic_seg = np.squeeze(gt_semantic_seg, axis=-1)  # Squeeze to remove the extra dimension
