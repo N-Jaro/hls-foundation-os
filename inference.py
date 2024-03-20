@@ -5,7 +5,7 @@ import rasterio
 import numpy as np
 from PIL import Image
 import tensorflow as tf
-from data_util import DataLoader
+from map_seg.data_utildata_util import DataLoader
 from mmseg.apis import init_model, inference_model
 
 
