@@ -1,6 +1,6 @@
 import os
 
-custom_imports = dict(imports=["../geospatial_fm","map_seg"])
+custom_imports = dict(imports=["geospatial_fm","map_seg"])
 
 # base options
 dist_params = dict(backend="nccl")
